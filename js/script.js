@@ -6,6 +6,11 @@ const repoList = document.querySelector(".repo-list");
 const allReposContainer = document.querySelector(".repos");
 // selects the section with a class of “repo-data” where the individual repo data will appear.
 const individualRepoData = document.querySelector(".repo-data");
+// variable to select the Back to Repo Gallery button
+const backToGallery = document.querySelector(".view-repos");
+// to select the input with the “Search by name” placeholder.
+const filterInput = document.querySelector(".filter-repos");
+
 
 
 const username = "PapaMusey";
@@ -51,6 +56,8 @@ getUserRepos();
 
 //  function to display information about each repo
 const displayRepoInformation = function (repos) {
+    filterInput.classList.remove("hide")
+
     for (const repo of repos) {
         let repoItem = document.createElement("li");
         repoItem.classList.add("repo");
@@ -89,7 +96,7 @@ const getRepoInfo = async function (repoName) {
 };
 
 
-// function to display the specific repo information
+// function to display the specific repo information (info relating to the selected repo)
 const specificInfo = function (repoInfo, languages) {
     individualRepoData.innerHTML = "";
 
@@ -108,6 +115,33 @@ const specificInfo = function (repoInfo, languages) {
         <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
 `;
     individualRepoData.append(div);
-
+    backToGallery.classList.remove("hide");
 };
+
+backToGallery.addEventListener("click", function () {
+    allReposContainer.classList.remove("hide");
+    individualRepoData.classList.add("hide");
+    backToGallery.classList.add("hide");
+})
+
+filterInput.addEventListener("input", function (e) {
+    const searchText = e.target.value;
+    console.log(searchText);
+    const repos = document.querySelectorAll(".repo");
+    const searchLowercaseText = searchText.toLowerCase();
+
+    for (const repo of repos) {
+        const repoLowercaseText = repo.innerText.toLowerCase();
+        if (repoLowercaseText.includes(searchLowercaseText)) {
+            repo.classList.remove("hide");
+        }
+        else {
+            repo.classList.add("hide");
+
+        }
+    }
+});
+
+// to select ALL elements on the page with a class of “repo”
+
 
