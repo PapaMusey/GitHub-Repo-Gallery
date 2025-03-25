@@ -1,14 +1,8 @@
-//  This div is where profile information will appears.
 const overview = document.querySelector(".overview");
-//  to select the unordered list to display the repos list.
 const repoList = document.querySelector(".repo-list");
-// selects the section with a class of “repos” where all your repo information appears.
 const allReposContainer = document.querySelector(".repos");
-// selects the section with a class of “repo-data” where the individual repo data will appear.
 const individualRepoData = document.querySelector(".repo-data");
-// variable to select the Back to Repo Gallery button
 const backToGallery = document.querySelector(".view-repos");
-// to select the input with the “Search by name” placeholder.
 const filterInput = document.querySelector(".filter-repos");
 
 
@@ -19,12 +13,11 @@ const getUserData = async function () {
     const response = await fetch(`https://api.github.com/users/${username}`);
     const data = await response.json();
     console.log(data);
-    displayUserInformation(data); // to display user's information on the webpage
-};
+    displayUserInformation(data); 
+}
 getUserData();
 
 
-// function to display the fetched user information on the page
 const displayUserInformation = function (data) {
     const div = document.createElement("div");
     div.classList.add("user-info");
@@ -43,7 +36,6 @@ const displayUserInformation = function (data) {
     overview.append(div);
 }
 
-// function to fetch repos.
 const getUserRepos = async function () {
     const response = await fetch(` https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
     const repoData = await response.json();
@@ -53,8 +45,6 @@ const getUserRepos = async function () {
 };
 getUserRepos();
 
-
-//  function to display information about each repo
 const displayRepoInformation = function (repos) {
     filterInput.classList.remove("hide")
 
@@ -63,22 +53,18 @@ const displayRepoInformation = function (repos) {
         repoItem.classList.add("repo");
         repoItem.innerHTML = `<h3>${repo.name}</h3>`;
         repoList.append(repoItem);
-
     }
 
 };
 
-
 repoList.addEventListener("click", function (e) {
     if (e.target.matches("h3")) {
         const repoName = e.target.innerText;
-        // console.log(repoName);
         getRepoInfo(repoName);
     };
 
 });
 
-// getting specific repo information we have, 
 const getRepoInfo = async function (repoName) {
     const repoResponse = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
     const repoInfo = await repoResponse.json();
@@ -95,16 +81,8 @@ const getRepoInfo = async function (repoName) {
     specificInfo(repoInfo, languages);
 };
 
-
-// function to display the specific repo information (info relating to the selected repo)
 const specificInfo = function (repoInfo, languages) {
     individualRepoData.innerHTML = "";
-
-    /* instead of using .show and .hide with their respective classes, 
-    it is better or appropriate to work with the hide class already predefines in the CSS file
-    repoData.classList.show("repo-data");
-    repoInfo.classList.hide("repos"); */
-
     individualRepoData.classList.remove("hide");
     allReposContainer.classList.add("hide");
     const div = document.createElement("div");
@@ -137,11 +115,9 @@ filterInput.addEventListener("input", function (e) {
         }
         else {
             repo.classList.add("hide");
-
         }
     }
 });
 
-// to select ALL elements on the page with a class of “repo”
 
 
